@@ -14,7 +14,7 @@ resource, send me an [**email**](mailto:src402@nyu.edu) about it with the subjec
 
 <sub>To be released every Monday and Wednesday before lecture.</sub>
 
-1. [**Introduction**](lectures/introduction/)
+1. [**Mutations v. Construction**](lectures/01-mutations)
 
 ### How To Use This Repository
 
