@@ -260,10 +260,14 @@ What generators are essentially doing here is breaking down the program's execut
 When `yield` is reached, a "snapshot" of the active data frame is taken and stored _together with the position from where the execution should later resume_. We can see this by following our handy [**code visualiser**](https://pythontutor.com/visualize.html#mode=edit):
 
 ![generators](assets/generators.gif)
+![test1](assets/generators.mov)
+<video width="320" height="240" controls>
+  <source src="generators.mov" type="video/mov">
+</video>
 
 <sub>**Figure 1**: Memory execution of [code block 3](#cb-3). Video version [here](assets/generators.mov).</sub>
 
-When `next` is called (in the `main` function), the data that was saved is _restored_, and the execution resumes from where it left off. Let's now update our simulated range to better match Python's built-in version:
+When `next` is called (in the `main` function), the data that was saved is _restored_, and the execution resumes from where it left off. Let's now [**update our simulated range**](code/generators.py) to better match Python's built-in version:
 
 ```python
 def simulated_range(start, stop, step=1):
