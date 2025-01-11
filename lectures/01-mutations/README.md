@@ -66,6 +66,39 @@ Let's list out example of list mutation:
 
     Note here that, although the value of the immutable `41` was reassigned within the list, this does _not_ make it mutable—we simply replaced it.
 
+    Here's what the memory map looks like for this operation:
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+            unused  │ mem_loc a │
+                    │———————————│
+            91      │ mem_loc b │
+                    │———————————│
+            87      │ mem_loc c │
+                    │———————————│
+            41      │ mem_loc d │  <-- to be replaced
+                    │———————————│
+            unused  │ mem_loc e │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+                    
+    Step 2 (Assign 65):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+            unused  │ mem_loc a │
+                    │———————————│
+            91      │ mem_loc b │
+                    │———————————│
+            87      │ mem_loc c │
+                    │———————————│
+            65      │ mem_loc e │  <-- new reference
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    ```
+
     (Also note that I really should've studied for that pre-calc final exam instead of playing Mass Effect 3 the entire week.)
 
 2. **The `.append(obj: Object) -> None` Method**: One of the most evident benefits of lists being mutable is their ability to grow by having more elements _appended_ to them:
@@ -75,10 +108,72 @@ Let's list out example of list mutation:
     brit_pop.append("Pulp")       # appending a new str object to it
     ```
 
+    Memory map:
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Blur"        │ mem_loc c │
+                    │———————————│
+           unused   │ mem_loc d │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    Step 2 (Append "Pulp"):
+                    ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Blur"        │ mem_loc c │
+                    │———————————│
+      "Pulp"        │ mem_loc d │  <-- new reference
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+    ```
+
 3. **The `.insert(idx: int, obj: Object) -> None` Method**: Similarly, Python allows you to place a new object within a list at any location that you want:
 
     ```Python
     brit_pop.insert(2, "Suade")           # "Suade" becomes the 2nd element, pushing "Pulp" to the 3rd index
+    ```
+
+    Memory map:
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Blur"        │ mem_loc c │
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    Step 2 (Insert "Suede" at Index 2):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Blur"        │ mem_loc c │
+                    │———————————│
+      "Suede"       │ mem_loc e │  <-- new reference
+                    │———————————│
+      "Pulp"        │ mem_loc d │  <-- shifted
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
     ```
 
 4. **The `.pop(idx: int = -1) -> Object` Method**: Of course, we can also remove elements from lists. This is commonly done at the end of the list, but not always:
@@ -90,6 +185,40 @@ Let's list out example of list mutation:
 
     `.pop()` is unusual for `list` methods in that it is one of the few to actually return a value; most `list` methods simply mutate the list _in-place_ and don't return anything. Here, we are doing both.
 
+    Memory map:
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Blur"        │ mem_loc c │  <-- to be removed
+                    │———————————│
+      "Suede"       │ mem_loc e │
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    Step 2 (After Removing "Blur"):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+           unused   │ mem_loc c │  <-- removed
+                    │———————————│
+      "Suede"       │ mem_loc e │  <-- shifted
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+    ```
+
 5. **The `reverse() -> None` and `sort() -> None` Methods**: Two very common operations (of whose inner workings we will soon learn about) on collections of objects is order _reversal_ and content _sorting_. These two processes are extremely powerful, and are a lot more involved than a simple Python method might make them seem (but we'll get there):
 
     ```Python
@@ -97,10 +226,72 @@ Let's list out example of list mutation:
 
     print(brit_pop)  # ['Pulp', 'Blur', 'Oasis']
 
+    ```
 
+    Memory map:
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Suede"       │ mem_loc e │
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    Step 2 (After Reverse):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Pulp"        │ mem_loc d │  <-- reversed
+                    │———————————│
+      "Suede"       │ mem_loc e │  <-- reversed
+                    │———————————│
+      "Oasis"       │ mem_loc b │  <-- reversed
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+    ```
+
+    ```Python
     brit_pop.sort()  # sorts the elements in the list
 
     print(brit_pop)  # ['Blur', 'Oasis', 'Pulp']
+    ```
+
+    Memory map:
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+      "Suede"       │ mem_loc e │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    Step 2 (After Sort):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │  <-- rearranged
+                    │———————————│
+      "Pulp"        │ mem_loc d │  <-- rearranged
+                    │———————————│
+      "Suede"       │ mem_loc e │  <-- rearranged
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
     ```
 
     Note that `.sort()` will raise an exception if the objects within the list cannot be compared (i.e. don't have those dunder methods defined). In other words, the following will fail...
@@ -125,6 +316,40 @@ Let's list out example of list mutation:
     brit_pop.extend(["The Verve", "Radiohead"])  # extends the list with the elements of another list
 
     print(brit_pop)  # ['Blur', 'Oasis', 'Pulp', 'The Verve', 'Radiohead']
+    ```
+
+    ```
+    Step 1 (Before):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+      "Suede"       │ mem_loc e │
+                    │———————————│
+           unused   │ mem_loc f │
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
+
+    Step 2 (After Extending):
+                   ~~~~~~~~~~~~~~~
+                    │———————————│
+           unused   │ mem_loc a │
+                    │———————————│
+      "Oasis"       │ mem_loc b │
+                    │———————————│
+      "Pulp"        │ mem_loc d │
+                    │———————————│
+      "Suede"       │ mem_loc e │
+                    │———————————│
+   "The Verve"      │ mem_loc f │  <-- new reference
+                    │———————————│
+   "Radiohead"      │ mem_loc g │  <-- new reference
+                    │———————————│
+                   ~~~~~~~~~~~~~~~
     ```
 
     Note here that _any_ iterable will work here (i.e. `tuple`, `range`, `str`, etc.)
