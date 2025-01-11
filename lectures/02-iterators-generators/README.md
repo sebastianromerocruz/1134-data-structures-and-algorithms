@@ -260,10 +260,6 @@ What generators are essentially doing here is breaking down the program's execut
 When `yield` is reached, a "snapshot" of the active data frame is taken and stored _together with the position from where the execution should later resume_. We can see this by following our handy [**code visualiser**](https://pythontutor.com/visualize.html#mode=edit):
 
 ![generators](assets/generators.gif)
-![test1](assets/generators.mov)
-<video width="320" height="240" controls>
-  <source src="assets/generators.mov" type="video/mov">
-</video>
 
 <sub>**Figure 1**: Memory execution of [code block 3](#cb-3). Video version [here](assets/generators.mov).</sub>
 
