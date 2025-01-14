@@ -210,7 +210,7 @@ So, how do we define them? Turns out to be much the same as you define a regular
 
 <a id="cb-3"></a>
 
-```
+```python
 def generator():
     # first iteration
     value = 1

@@ -19,6 +19,17 @@ def generator():
 
 
 def simulated_range(start, stop, step=1):
+    """
+    Creates a generator simulating Python's built-in range generator.
+
+    Args:
+        start (int): Start point of generator.
+        stop (int): Cap of generator, meaning that last value generated will be stop-1.
+        step (int, optional): The step taken by the generator. Defaults to 1.
+
+    Yields:
+        int: The current value stored in the generator.
+    """
     current = start
 
     while current < stop:
