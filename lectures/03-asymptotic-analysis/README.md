@@ -233,9 +233,9 @@ VERSION 2
 
 VERSION 3
 ---------
-1, 2, 3, 4, ... √num, ..., num / 2, ..., num
-|                 |
-+—————————————————+
+1, 2, 3, 4, ..., √num, ..., num / 2, ..., num
+|                  |
++——————————————————+
    from 1 to √num
 ```
 
@@ -338,19 +338,25 @@ And for our `√num` algorithm, the runtime formula would be:
 Make sense? So, for asymptotic analysis, we're interested in finding how the runtime (`T(n)`) grows as `n` gets really really large. Say that `n`, for example, equalled 1,000, 1,000,000, and 1,000,000,000:
 
 > T<sub>naïve</sub>(n) = 5,000 + 6 = **5,006**
+>
 > T<sub>half</sub>(n) = 5,000,000 + 6 = **5,000,006**
+>
 > T<sub>sqrt</sub>(n) = 5,000,000,000 + 6 = **5,000,000,006**
 
 As `n` grows larger and larger, the value of the constant stops mattering at all. So, in asymptotic analysis, we always drop the low-order terms. Morover, we also irgnore the leading constants of the highest-order term:
 
 > T<sub>naïve</sub>(n) = 5n + 6 ≅ n
+>
 > T<sub>half</sub>(n) = 5n / 2 + 6 = (5 / 2)n + 6 ≅ n
+>
 > T<sub>sqrt</sub>(n) = 5√n + 6 ≅ √n
 
 To formally express this computer science, we use something called **big-theta** notation:
 
 > T<sub>naïve</sub>(n) has a **Θ(n)** runtime.
+>
 > T<sub>half</sub>(n) has a **Θ(n)** runtime.
+>
 > T<sub>sqrt</sub>(n) has a **Θ(√n)** runtime.
 
 <a id="4"></a>
