@@ -375,49 +375,49 @@ In order to consider only the upper bound in asymptotic analysis, we use a sligh
 
 Let...
 
-> **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).
-> 
-> **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`⁡`n)) that we use to compare how fast f(`n`) grows.
+> **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).  
+>
+> **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`n`)) that we use to compare how fast f(`n`) grows.
 
 Using these, we say:
 
 > f(`n`) = O(g(`n`))
 
-That is, the difference in runtime of g(`n`) is basically around the same when `n` is really, really big (worst-case scenario).
+That is, the runtime of f(`n`) grows no faster than g(`n`) when `n` is really, really big (worst-case scenario).
 
-The way we prove this is a little abstract, but the actual process is relatively simple. When f(`n`) = O(g(`n`)), we say that there's a constant, `c`, that makes f(`n`) smaller than or equal to `c` * g(`n`). Moreover, there's a certain value of `n` (call it `n`<sub>0</sub>) where this relationship holds for _all `n` bigger than `n`<sub>0</sub>_ (the point where we start saying "really, really, big" values of `n`).
+The way we prove this is a little abstract, but the actual process is relatively simple. When f(`n`) = O(g(`n`)), we say that there's a constant, `c`, that makes f(`n`) smaller than or equal to `c` * g(`n`). Moreover, there's a certain value of `n` (call it `n`<sub>0</sub>) where this relationship holds for _all `n` bigger than `n`<sub>0</sub>_ (the point where we start saying "really, really big" values of `n`).
 
 Confused? Yeah, I don't blame you. Let's try to concretise this by showing you a simple example. Say that:
 
-> f(`n`) = 2`n` + 3
+> f(`n`) = 3`n`<sup>2</sup> + 6`n` − 15
 
 And we're trying to prove that the following simple function:
 
-> g(`n`) = `n`
+> g(`n`) = `n`<sup>2</sup>
 
-can also be used to describe the runtime of f(`n`) (i.e. if _f(`n`) = O(g(`n`))_). The steps to do this are as follows:
+can also be used to describe the runtime of f(`n`) (i.e., if _f(`n`) = O(g(`n`))_). The steps to do this are as follows:
 
-1. Pick a value for our constant `c` that would satisfy the inequality f(`n`) <= `c` * g(_n_). In this case, any integer over 2 would be fine, since it is larger than or equal to the leading terms of f(`n`) (i.e. larger than 3). We thus get:
+1. Pick a value for our constant `c` that would satisfy the inequality f(`n`) <= `c` * g(`n`). In this case, any constant greater than or equal to 3 works, as it must match the coefficient of the dominant term (3`n`<sup>2</sup>) while accounting for the smaller terms (+6`n` − 15). Let’s choose `c = 4`. We thus get:
 
-> f(`n`) = 2`n`+ 3
+> f(`n`) = 3`n`<sup>2</sup> + 6`n` − 15  
 >
-> g(`n`) = 3`n`
+> g(`n`) = 4`n`<sup>2</sup>
 
-2. Write the inequality out. We ask ourselves: is f(`n`) <= `c` * g(_n_) for all `n` >= 1? Let's see:
+2. Write the inequality out. We ask ourselves: is f(`n`) <= `c` * g(`n`) for all `n` >= 1? Let’s see:
 
-> 2`n` + 3 <= 3`n`
+> 3`n`<sup>2</sup> + 6`n` − 15 <= 4`n`<sup>2</sup>  
 >
-> Say `n` = 5:
-> 
-> 2 * 5 + 3 <= 3 * 5
->
-> 13 <= 15
+> For `n` = 5:  
+> 3(5)<sup>2</sup> + 6(5) − 15 <= 4(5)<sup>2</sup>  
+> 75 + 30 − 15 <= 100  
+> 90 <= 100  
 
-3. Confirm correctness. Is 13 <= 15. Yes! Therefore, f(`n`) has a worst-case runtime (an upper bound) of O(`n`).
+3. Confirm correctness. Since the inequality holds for all large `n`, f(`n`) has a worst-case runtime (an upper bound) of O(`n`<sup>2</sup>).
 
-![big-o](assets/big-o.png)
-
+![big-o](assets/big-o.png)  
 <sub>**Figure 1**: Here's how this upper bound might look, visually.</sub>
+
+---
 
 #### Big-Omega Analysis
 
@@ -427,7 +427,7 @@ That’s where Big-Omega (Ω) comes in.
 
 Let...
 
-> **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).
+> **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).  
 >
 > **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`n`)) that we use to compare how fast f(`n`) grows.
 
@@ -441,36 +441,36 @@ The way we prove this is similar to Big-O, but flipped around: when f(`n`) = Ω(
 
 Still a bit abstract? Let’s use a simple example to clarify. Say that:
 
-> f(`n`) = 2`n` + 3
+> f(`n`) = 3`n`<sup>2</sup> + 6`n` − 15
 
 And we want to prove that:
 
-> g(`n`) = `n`
+> g(`n`) = `n`<sup>2</sup>
 
 is a valid lower bound for f(`n`) (i.e., if _f(`n`) = Ω(g(`n`))_). Here’s how we do it:
 
-1. Pick a value for our constant `c` that satisfies the inequality f(`n`) >= `c` * g(_n_). In this case, any constant less than or equal to 2 would work, since the leading term of f(`n`) is 2`n`. For simplicity, let’s pick `c = 1.5`. We now compare:
+1. Pick a value for our constant `c` that satisfies the inequality f(`n`) >= `c` * g(`n`). In this case, any constant less than or equal to 3 works, as it must reflect the coefficient of the dominant term (3`n`<sup>2</sup>) without overestimating. Let’s pick `c = 2.5`. We now compare:
 
-> f(`n`) = 2`n` + 3
+> f(`n`) = 3`n`<sup>2</sup> + 6`n` − 15  
 >
-> g(`n`) = 1.5`n`
+> g(`n`) = 2.5`n`<sup>2</sup>
 
-2. Write the inequality out. We ask ourselves: is f(`n`) >= `c` * g(_n_) for all `n` >= 1? Let’s check:
+2. Write the inequality out. We ask ourselves: is f(`n`) >= `c` * g(`n`) for all `n` >= 1? Let’s check:
 
-> 2`n` + 3 >= 1.5`n`
+> 3`n`<sup>2</sup> + 6`n` − 15 >= 2.5`n`<sup>2</sup>  
 >
-> Say `n` = 5:
-> 
-> 2 * 5 + 3 >= 1.5 * 5
-> 13 >= 7.5
+> For `n` = 5:  
+> 3(5)<sup>2</sup> + 6(5) − 15 >= 2.5(5)<sup>2</sup>  
+> 75 + 30 − 15 >= 62.5  
+> 90 >= 62.5  
 
-3. Confirm correctness. Is 13 >= 7.5? Yes! Therefore, f(`n`) has a best-case runtime (a lower bound) of Ω(`n`). 
+3. Confirm correctness. Since the inequality holds for all large `n`, f(`n`) has a best-case runtime (a lower bound) of Ω(`n`<sup>2</sup>).
 
 Big-Omega complements Big-O by showing not how slow an algorithm can grow in the worst-case, but how fast it’s guaranteed to grow in any case.
 
-![big-omega](assets/big-omega.png)
+![big-omega](assets/big-omega.png)  
+<sub>**Figure 2**: Here's how this lower bound might look, visually.</sub>  
 
-<sub>**Figure 2**: Here's how this lower bound might look, visually.</sub
 
 ### Big-Theta Analysis
 
