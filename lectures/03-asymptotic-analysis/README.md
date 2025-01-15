@@ -12,6 +12,8 @@
 2. [**Testing For Prime Numbers**](#2)
 3. [**Runtime Analyses**](#3)
 4. [**Asymptotic Analysis**](#4)
+5. []()
+6. [**Addenda**](#add)
 
 ---
 
@@ -343,7 +345,7 @@ Make sense? So, for asymptotic analysis, we're interested in finding how the run
 >
 > T<sub>sqrt</sub>(n) = 5,000,000,000 + 6 = **5,000,000,006**
 
-As `n` grows larger and larger, the value of the constant stops mattering at all. So, in asymptotic analysis, we always drop the low-order terms. Morover, we also irgnore the leading constants of the highest-order term:
+As `n` grows larger and larger, the value of the constant stops mattering at all. So, in asymptotic analysis, we always drop the low-order terms. Morover, we also ignore the leading constants of the highest-order term:
 
 > T<sub>naïve</sub>(n) = 5n + 6 ≅ n
 >
@@ -364,3 +366,336 @@ To formally express this computer science, we use something called **big-theta**
 <br>
 
 ## Asymptotic Analysis
+
+We use big-theta notation to capture both the _upper and lower bounds_ to describe the exact rate of growth. That is, an algorithm with Θ(√`n`) runtime grows at _exactly the same rate_ as √`n` as `n` gets larger. Now, when designing algorithms, we typically only care about the _upper bound_. Why? Well, it's simply because it _can_ happen. However unlikely, if you algorithm can reach a runtime bound that is too high, you still need to plan around it. Expect the best, prepare for the worst.
+
+In order to consider only the upper bound in asymptotic analysis, we use a slightly different notation—that of big-O. **Big-O notation** describes the upper bound of an algorithm's growth, focusing on its **worst-case** performance as the input size grows. Using our example above in the case of big-O, we can no longer assume that the runtime grows at exactly the same rate as √`n` as `n` gets larger. Instead, we say that we now have two function at play here.
+
+#### Big-O Analysis
+
+Let...
+
+> **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).
+> 
+> **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`⁡`n)) that we use to compare how fast f(`n`) grows.
+
+Using these, we say:
+
+> f(`n`) = O(g(`n`))
+
+That is, the difference in runtime of g(`n`) is basically around the same when `n` is really, really big (worst-case scenario).
+
+The way we prove this is a little abstract, but the actual process is relatively simple. When f(`n`) = O(g(`n`)), we say that there's a constant, `c`, that makes f(`n`) smaller than or equal to `c` * g(`n`). Moreover, there's a certain value of `n` (call it `n`<sub>0</sub>) where this relationship holds for _all `n` bigger than `n`<sub>0</sub>_ (the point where we start saying "really, really, big" values of `n`).
+
+Confused? Yeah, I don't blame you. Let's try to concretise this by showing you a simple example. Say that:
+
+> f(`n`) = 2`n` + 3
+
+And we're trying to prove that the following simple function:
+
+> g(`n`) = `n`
+
+can also be used to describe the runtime of f(`n`) (i.e. if _f(`n`) = O(g(`n`))_). The steps to do this are as follows:
+
+1. Pick a value for our constant `c` that would satisfy the inequality f(`n`) <= `c` * g(_n_). In this case, any integer over 2 would be fine, since it is larger than or equal to the leading terms of f(`n`) (i.e. larger than 3). We thus get:
+
+> f(`n`) = 2`n`+ 3
+>
+> g(`n`) = 3`n`
+
+2. Write the inequality out. We ask ourselves: is f(`n`) <= `c` * g(_n_) for all `n` >= 1? Let's see:
+
+> 2`n` + 3 <= 3`n`
+>
+> Say `n` = 5:
+> 
+> 2 * 5 + 3 <= 3 * 5
+> 13 <= 15
+
+3. Confirm correctness. Is 13 <= 15. Yes! Therefore, f(`n`) has a worst-case runtime (an upper bound) of O(`n`).
+
+![big-o](assets/big-o.png)
+
+<sub>**Figure 1**: Here's how this upper bound might look, visually.</sub>
+
+#### Big-Omega Analysis
+
+Now that we’ve talked about Big-O and how it gives us an **upper bound** on how fast an algorithm grows, let’s switch perspectives. What if we wanted to describe a **lower bound** instead—how fast the algorithm is guaranteed to grow, even in the **best-case scenario**?
+
+That’s where Big-Omega (Ω) comes in.
+
+Let...
+
+> **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).
+>
+> **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`⁡`n)) that we use to compare how fast f(`n`) grows.
+
+Using these, we say:
+
+> f(`n`) = Ω(g(`n`))
+
+That is, the runtime of f(`n`) grows **at least as fast** as g(`n`) when `n` is really, really big (best-case scenario).
+
+The way we prove this is similar to Big-O, but flipped around: when f(`n`) = Ω(g(`n`)), we say that there’s a constant, `c`, that makes f(`n`) **larger than or equal to** `c` * g(`n`). Moreover, there’s a certain value of `n` (call it `n`<sub>0</sub>) where this relationship holds for _all `n` bigger than `n`<sub>0</sub>_ (the point where we start saying "really, really big" values of `n`).
+
+Still a bit abstract? Let’s use a simple example to clarify. Say that:
+
+> f(`n`) = 2`n` + 3
+
+And we want to prove that:
+
+> g(`n`) = `n`
+
+is a valid lower bound for f(`n`) (i.e., if _f(`n`) = Ω(g(`n`))_). Here’s how we do it:
+
+1. Pick a value for our constant `c` that satisfies the inequality f(`n`) >= `c` * g(_n_). In this case, any constant less than or equal to 2 would work, since the leading term of f(`n`) is 2`n`. For simplicity, let’s pick `c = 1.5`. We now compare:
+
+> f(`n`) = 2`n` + 3
+>
+> g(`n`) = 1.5`n`
+
+2. Write the inequality out. We ask ourselves: is f(`n`) >= `c` * g(_n_) for all `n` >= 1? Let’s check:
+
+> 2`n` + 3 >= 1.5`n`
+>
+> Say `n` = 5:
+> 
+> 2 * 5 + 3 >= 1.5 * 5
+> 13 >= 7.5
+
+3. Confirm correctness. Is 13 >= 7.5? Yes! Therefore, f(`n`) has a best-case runtime (a lower bound) of Ω(`n`). 
+
+Big-Omega complements Big-O by showing not how slow an algorithm can grow in the worst-case, but how fast it’s guaranteed to grow in any case.
+
+![big-omega](assets/big-omega.png)
+
+<sub>**Figure 2**: Here's how this lower bound might look, visually.</sub
+
+### Big-Theta Analysis
+
+What if we wanted to prove the _exact_ behaviour of f(`n`) as `n` gets larger and larger? Recall that we use big-theta notation for that. The formal definition of big-theta is:
+
+> **f(`n`) = Θ(g(`n`))** if there exists values for constants `c`<sub>1</sub>, `c`<sub>2</sub> and `n`<sub>0</sub> such that:
+>
+> `c`<sub>1</sub> * g(`n`) <= f(`n`) <= `c`<sub>2</sub> * g(`n`), for all values of `n` that are at least `n`<sub>0</sub>.
+
+The reason we have two inequalities now is because we want to check both the worst-case scenario (big-O) and the best case scenario (called big-omega, Ω). Let's pick a slightly more complicated runtime function, say:
+
+> f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15
+
+I'm gonna pick:
+
+- **`c`<sub>1</sub> = 3** for the best-case scenario. Any number 3 and under will work here.
+- **`c`<sub>2</sub> = 9** for the worst-case scenario. This one's really just a guess—we'll find the actual value naturally.
+- **`n`<sub>0</sub> = 3** as the point where `n` becomes "really, really big".
+
+Thus, we must:
+
+1. Prove that 3`n`<sup>2</sup> <= f(`n`) <= 9`n`<sup>2</sup> for all `n` >= `n`<sub>0</sub>.
+2. Analyse f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15. This function has three parts:
+    1. **3`n`<sup>2</sup>**: The dominant term, growing the fastest as `n` → ∞,
+    2. **6`n`**: A smaller term that grows linearly.
+    3. **-15**: A constant that becomes insignificant for large `n`.
+
+    As explained earlier, for big-theta, we only focus on the dominant n<sup>2</sup> term and show that the smaller terms don't significantly affect f(`n`)'s growth rate.
+3. **Set the lower bound**. We must prove f(`n`) >= 3`n`<sup>2</sup> for all `n` >= `n`<sub>0</sub>​...
+    - ...from f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15, so we ensure it's still >= 3`n`<sup>2</sup> for large `n`.
+    - Now, the additional terms shouldn’t interfere with this inequality for large `n`. In other words, we must prove that 6`n` − 15 doesn’t make f(`n`) larger than or equal to 3`n`<sup>2</sup> for large `n`. For this to be true, these terms have to be _non-negative_. The calculation goes as follows:
+
+        1. 6`n` − 15 >= 0
+        2. 6`n` >= 15
+        3. n >= 2.5
+
+    - When we get a float number, we round _up_ to a whole number. So, for `n` >= 3:
+        > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 **>= 3`n`<sup>2</sup>**
+
+    - Thus, **the lower bound 3`n` <= f(`n`) holds for all `n` >= `n`<sub>0</sub> 3**.
+4. Now, **set the upper bound**:
+    - We must prove f(`n`) <= 9`n`<sup>2</sup> for all `n` >= `n`<sub>0</sub>
+    - We're going to combine all terms in f(`n`) (including 6`n` and -15) in a way that ensures f(`n`) grows _slower_ than 9`n`<sup>2</sup> (our upper bound).
+        1. **Start with f(`n`)**:
+            > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15
+        2. **Compare terms**:
+            1. **3`n`<sup>2</sup>**: The dominant term, which grows fastest as `n` becomes large. It is directly part of f(`n`) and contributes most to its growth.
+            2. **6`n`**: This is a smaller term (linear growth compared to `n`<sup>2</sup>), but we can bound it by associating it with `n`<sup>2</sup>.
+            3. **-15**: This is a constant term that becomes insignificant as nn grows large. However, for the purpose of this proof, we replace it with a larger, positive term to simplify the analysis and avoid any potential edge cases caused by the negative constant. Specifically, we use 6`n`<sup>2</sup>, as it is large enough to account for both 6`n` and −15 (the constant term). This ensures the inequality remains valid for all `n`. It also works out nicely with our guess of 9 for **`c`<sub>2</sub>.
+        3. **Bound f(`n`)**: we now rewrite f(`n`) as follows:
+            > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 **< 3`n`<sup>2</sup> + 6`n` - 6`n`<sup>2</sup>**.
+            >
+            > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 <= **9`n`<sup>2</sup> + 6`n`**.
+            >
+        4. Since we drop the lesser power terms (6`n`) anyway, we thus say that f(`n`) <= 9n<sup>2</sup>
+5. Finally, we combine both bounds. For `n` >= `n`<sub>0</sup> = 3:
+    > 3`n`<sup>2</sup> <= f(`n`) <= 9`n`<sup>2</sup>
+    Which satisfied the definition of big-theta: **f(`n`) = Θ(`n`)**.
+
+![big-theta](assets/big-theta.png)
+
+<sub>**Figure 3**: Here's how both bounds might look, visually.</sub
+
+### In summary of the family of notations...
+
+<p align=center><strong>O</strong>: f(<code>n</code>) >= <code>c</code> * g(<code>n</code>), for all <code>n</code> >= <code>n</code><sub>0</sub></p>
+
+> |f| is bounded above by g (up to a constant factor) asymptotically.
+
+<p align=center><strong>Ω</strong>: f(<code>n</code>) <= <code>c</code> * g(<code>n</code>), for all <code>n</code> >= <code>n</code><sub>0</sub></p>
+
+> f is bounded below by g asymptotically.
+
+<p align=center><strong>Θ</strong>: <code>c</code><sub>2</sub> * g(<code>n</code>) <= f(<code>n</code>) <= <code>c</code><sub>1</sub> * g(<code>n</code>), for all <code>n</code> >= <code>n</code><sub>0</sub></p>
+
+> f is bounded above and below by g asymptotically.
+
+
+
+#### **Comparing Asymptotic Order**
+
+| **Asymptotic Order** | **Functions**                                      |
+|-----------------------|----------------------------------------------------|
+| Θ(log(n))            | log₂(n), 7log(n) - 5, 3log₁₀(n) + 2, ...           |
+| Θ(√n)               | √n, 5√n + 6, √n - 4, ...                           |
+| Θ(n)                | n, 5n + 6, 2.5n + 6, ...                           |
+| Θ(n²)               | n², 7n² + 3n - 5, ...                              |
+| Θ(n³)               | n³, 5n³ + 7n² + 3n - 5, ...                        |
+
+<sub>**Figure 4**: As previously explained, only the leading term matters in big-theta analysis.</sub>
+
+#### Comparing Order
+
+| **f(n) = 3n² + 7n + 5** | **True (T) / False (F)** | **f(n) = log(n)** | **True (T) / False (F)** |
+|--------------------------|--------------------------|-------------------|--------------------------|
+| f(n) = Θ(n²)            | T                        | f(n) = Θ(n)       | F                        |
+| f(n) = O(n²)            | T                        | f(n) = O(n)       | T                        |
+| f(n) = Ω(n²)            | T                        | f(n) = Ω(n)       | F                        |
+| f(n) = Θ(n)             | F                        |                   |                          |
+| f(n) = O(n)             | F                        |                   |                          |
+| f(n) = Ω(n)             | T                        |                   |                          |
+
+<sub>**Figure 5**: Any runtime of a higher order than the largest term can be said be an upper bound, since it satisfies the inequality.</sub>
+
+<br>
+
+## Addendum A: Why 9 for c<sub>2</sub>?
+
+##### **What Happens with c<sub>2</sub> = 8?**
+If we want f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 ≤ 8`n`<sup>2</sup>, we’re left with 8`n`<sup>2</sup> - 3`n`<sup>2</sup> = 5`n`<sup>2</sup> to account for the smaller terms (6`n` - 15). The goal is to prove:
+
+> 6`n` - 15 ≤ 5n<sup>2</sup>.
+
+##### **Why 6`n` - 15 ≤ 5`n`<sup>2</sup> Fails for Some `n`:**
+1. **Dominance of 5`n`<sup>2</sup> for large `n`:**
+   - For very large `n`, 5`n`<sup>2</sup> grows much faster than 6`n` - 15, so the inequality holds for large n. However...
+
+2. **Small Values of `n`:**
+   - For smaller values of `n`, 6`n` - 15 can exceed 5`n`<sup>2</sup>. Let’s test:
+     - For n = 1:
+       6(1) - 15 = -9, 5(1)<sup>2</sup> = 5. Inequality holds.
+     - For n = 2:
+       6(2) - 15 = -3, 5(2)<sup>2</sup> = 20. Inequality holds.
+     - For n = 3:
+       6(3) - 15 = 3, 5(3)<sup>2</sup> = 45. Inequality holds.
+
+   So far, it works, but...
+
+3. **Edge Cases or Tightness:**
+   - The tighter the bound (e.g., c<sub>2</sub> = 8), the closer the inequality comes to failing, particularly as n transitions from small to large. The more generous choice of c<sub>2</sub> = 9 adds a "buffer" and makes the proof more robust.
+
+##### **Why 6n - 15 ≤ 6n<sup>2</sup> (for c<sub>2</sub> = 9) Works:**
+When c<sub>2</sub> = 9, the remaining 6n<sup>2</sup> after 3n<sup>2</sup> is plenty to absorb 6n - 15. For all n ≥ 1, it’s clear that:
+> 6n - 15 ≤ 6n<sup>2</sup>
+
+This inequality holds comfortably, ensuring the upper bound f(n) ≤ 9n<sup>2</sup> works without any edge cases. 
+
+The smaller the guessed c<sub>2</sub> (like 8), the tighter the available space for 6n - 15, increasing the chance that the inequality f(n) ≤ c<sub>2</sub>n<sup>2</sup> could fail for some n. Picking c<sub>2</sub> = 9 ensures enough room for all terms in f(n) while keeping the bound tight and valid.
+
+<br>
+
+<a id="add"></a>
+
+## Addendum B: Another Big-Theta Example
+
+### **Example Function**
+
+Suppose:  
+> f(n) = 4n<sup>3</sup> + 5n<sup>2</sup> + 10n + 20  
+
+We aim to prove:  
+> f(n) = Θ(n<sup>3</sup>)
+
+#### **What Does Θ(n<sup>3</sup>) Mean?**
+
+To show f(n) = Θ(n<sup>3</sup>), we need to prove that:
+
+1. **Lower Bound (Ω(n<sup>3</sup>)):**  
+   c<sub>1</sub> * n<sup>3</sup> ≤ f(n), for all n ≥ n<sub>0</sub>
+
+2. **Upper Bound (O(n<sup>3</sup>)):**  
+   f(n) ≤ c<sub>2</sub> * n<sup>3</sup>, for all n ≥ n<sub>0</sub>
+
+Where c<sub>1</sub> and c<sub>2</sub> are positive constants, and n<sub>0</sub> is the threshold beyond which the inequalities hold.
+
+#### **Step 1: Set the Lower Bound (Ω(n<sup>3</sup>))**
+
+We want to show:  
+> f(n) ≥ c<sub>1</sub> * n<sup>3</sup>
+
+##### Analyze f(n):  
+> f(n) = 4n<sup>3</sup> + 5n<sup>2</sup> + 10n + 20  
+
+1. **Dominant Term:**  
+   The 4n<sup>3</sup> term grows the fastest as n becomes very large. For large n, the other terms (5n<sup>2</sup>, 10n, 20) contribute relatively little.
+
+2. **Bound the Smaller Terms:**  
+   To simplify the analysis, we ignore 5n<sup>2</sup>, 10n, and 20 because they don’t reduce f(n) below 4n<sup>3</sup>.
+
+##### Choose c<sub>1</sub> = 4:  
+For large n, it’s clear that:  
+> f(n) = 4n<sup>3</sup> + 5n<sup>2</sup> + 10n + 20 ≥ 4n<sup>3</sup>  
+
+Thus, f(n) ≥ c<sub>1</sub> * n<sup>3</sup> for c<sub>1</sub> = 4 and n<sub>0</sub> = 1, because for n ≥ 1, the dominant term 4n<sup>3</sup> grows large enough that the smaller terms (5n<sup>2</sup>, 10n, 20) do not reduce f(n) below 4n<sup>3</sup>.
+
+---
+
+#### **Step 2: Set the Upper Bound (O(n<sup>3</sup>))**
+
+We want to show:  
+> f(n) ≤ c<sub>2</sub> * n<sup>3</sup>
+
+##### Analyze f(n):  
+> f(n) = 4n<sup>3</sup> + 5n<sup>2</sup> + 10n + 20  
+
+1. **Dominant Term:**  
+   The 4n<sup>3</sup> term is still the most significant for large n.
+
+2. **Bound Smaller Terms:**  
+   Replace 5n<sup>2</sup>, 10n, and 20 with terms proportional to n<sup>3</sup>. For simplicity, let’s overestimate their growth:
+   - 5n<sup>2</sup> ≤ n<sup>3</sup> for n ≥ 5  
+   - 10n ≤ n<sup>3</sup> for n ≥ 10  
+   - 20 ≤ n<sup>3</sup> for n ≥ 20  
+
+3. **Combine Terms:**  
+   Using this overestimation:  
+   > f(n) ≤ 4n<sup>3</sup> + n<sup>3</sup> + n<sup>3</sup> + n<sup>3</sup> = 7n<sup>3</sup>  
+
+#### Choose c<sub>2</sub> = 7:  
+For n ≥ 20, we can conclude:  
+> f(n) ≤ 7n<sup>3</sup>
+
+#### **Step 3: Combine Bounds**
+
+We’ve shown that:  
+1. f(n) ≥ 4n<sup>3</sup> for n ≥ 1  
+2. f(n) ≤ 7n<sup>3</sup> for n ≥ 20  
+
+Thus, for n ≥ 20:  
+> 4n<sup>3</sup> ≤ f(n) ≤ 7n<sup>3</sup>  
+
+This satisfies the definition of Θ(n<sup>3</sup>), so:  
+> f(n) = Θ(n<sup>3</sup>)
+
+#### **Key Takeaways**
+
+- The **dominant term** (4n<sup>3</sup>) determines the asymptotic growth.
+- Smaller terms (5n<sup>2</sup>, 10n, 20) become negligible as n grows large, but we still overestimate them to simplify the proof.
+- c<sub>1</sub> and c<sub>2</sub> are chosen based on the dominant term and a safe overestimation of smaller terms.
