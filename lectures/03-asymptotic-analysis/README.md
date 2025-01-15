@@ -13,7 +13,7 @@
 3. [**Runtime Analyses**](#3)
 4. [**Asymptotic Analysis**](#4)
 5. []()
-6. [**Addenda**](#add)
+6. [**Addendum 1**](#add1)
 
 ---
 
@@ -410,6 +410,7 @@ can also be used to describe the runtime of f(`n`) (i.e. if _f(`n`) = O(g(`n`))_
 > Say `n` = 5:
 > 
 > 2 * 5 + 3 <= 3 * 5
+>
 > 13 <= 15
 
 3. Confirm correctness. Is 13 <= 15. Yes! Therefore, f(`n`) has a worst-case runtime (an upper bound) of O(`n`).
@@ -428,7 +429,7 @@ Let...
 
 > **f(`n`)**: be the runtime of your algorithm (how many steps it takes as the input size `n` grows).
 >
-> **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`⁡`n)) that we use to compare how fast f(`n`) grows.
+> **g(`n`)**: be a simple function (like `n`, `n`<sup>2</sup>, log(`n`)) that we use to compare how fast f(`n`) grows.
 
 Using these, we say:
 
@@ -518,7 +519,7 @@ Thus, we must:
         2. **Compare terms**:
             1. **3`n`<sup>2</sup>**: The dominant term, which grows fastest as `n` becomes large. It is directly part of f(`n`) and contributes most to its growth.
             2. **6`n`**: This is a smaller term (linear growth compared to `n`<sup>2</sup>), but we can bound it by associating it with `n`<sup>2</sup>.
-            3. **-15**: This is a constant term that becomes insignificant as nn grows large. However, for the purpose of this proof, we replace it with a larger, positive term to simplify the analysis and avoid any potential edge cases caused by the negative constant. Specifically, we use 6`n`<sup>2</sup>, as it is large enough to account for both 6`n` and −15 (the constant term). This ensures the inequality remains valid for all `n`. It also works out nicely with our guess of 9 for **`c`<sub>2</sub>.
+            3. **-15**: This is a constant term that becomes insignificant as `n` grows large. However, for the purpose of this proof, we replace it with a larger, positive term to simplify the analysis and avoid any potential edge cases caused by the negative constant. Specifically, we use 6`n`<sup>2</sup>, as it is large enough to account for both 6`n` and −15 (the constant term). This ensures the inequality remains valid for all `n`. ([**why**](#add1)) It also works out nicely with our guess of 9 for `c`<sub>2</sub>.
         3. **Bound f(`n`)**: we now rewrite f(`n`) as follows:
             > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 **< 3`n`<sup>2</sup> + 6`n` - 6`n`<sup>2</sup>**.
             >
@@ -611,7 +612,7 @@ The smaller the guessed c<sub>2</sub> (like 8), the tighter the available space 
 
 <br>
 
-<a id="add"></a>
+<a id="add1"></a>
 
 ## Addendum B: Another Big-Theta Example
 
