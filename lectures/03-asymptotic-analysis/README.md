@@ -888,78 +888,67 @@ This satisfies the definition of Θ(n<sup>3</sup>), so:
 
 <a id="add3"></a>
 
-## Addendum c
-
-The formula for the sum of the first \( n \) positive integers, \( 1 + 2 + 3 + \dots + n = \frac{n(n + 1)}{2} \), can be derived and explained intuitively as follows:
-
----
+## Addendum C
 
 ### **Step-by-Step Explanation**
 
 #### **1. Break Down the Problem**
-We are summing:
-\[
-S = 1 + 2 + 3 + \dots + n
-\]
+We are summing:  
+S = 1 + 2 + 3 + ... + `n`  
+
 Our goal is to find a formula that directly calculates this sum without adding all the numbers individually.
 
 #### **2. Visualize the Pairing**
-Imagine writing the numbers forward and backward:
+Imagine writing the numbers forward and backward:  
 
 ```
-S = 1 + 2 + 3 + ... + n
-S = n + (n-1) + (n-2) + ... + 1
+S = 1 + 2 + 3 + ... + `n`
+S = `n` + (`n`-1) + (`n`-2) + ... + 1
 ```
 
-Now, add these two equations together, pairing each number from the start and end:
+Now, add these two equations together, pairing each number from the start and end:  
 
 ```
-S + S = (1 + n) + (2 + (n-1)) + (3 + (n-2)) + ... + (n + 1)
+S + S = (1 + `n`) + (2 + (`n`-1)) + (3 + (`n`-2)) + ... + (`n` + 1)
 ```
 
-Each pair sums to \( (n + 1) \), and there are \( n \) such pairs. So:
+Each pair sums to (`n` + 1), and there are `n` such pairs. So:  
 
 ```
-2S = n(n + 1)
+2S = `n`(`n` + 1)
 ```
 
-#### **3. Solve for \( S \)**
-Divide both sides by 2 to isolate \( S \):
+#### **3. Solve for S**
+Divide both sides by 2 to isolate S:  
 
-\[
-S = \frac{n(n + 1)}{2}
-\]
+```
+S = `n`(`n` + 1) / 2
+```
 
 ---
 
 ### **Why Does This Work?**
-1. **The Pairing Method:** Each number in the series pairs with a complementary number at the other end, always summing to \( (n + 1) \).
-2. **Number of Pairs:** Since there are \( n \) numbers in total, there are \( n \) such pairs.
+1. **The Pairing Method:** Each number in the series pairs with a complementary number at the other end, always summing to (`n` + 1).  
+2. **Number of Pairs:** Since there are `n` numbers in total, there are `n` such pairs.
 
 ---
 
 ### **Example**
-Let’s apply this to \( n = 5 \):
-\[
-S = 1 + 2 + 3 + 4 + 5
-\]
+Let’s apply this to `n` = 5:  
+S = 1 + 2 + 3 + 4 + 5  
 
-Using the formula:
-\[
-S = \frac{5(5 + 1)}{2} = \frac{5 \cdot 6}{2} = 15
-\]
+Using the formula:  
+S = 5(5 + 1) / 2 = (5 * 6) / 2 = 15  
 
-Manually adding the numbers:
-\[
-1 + 2 + 3 + 4 + 5 = 15
-\]
+Manually adding the numbers:  
+1 + 2 + 3 + 4 + 5 = 15  
 
 Both results match, confirming the formula works!
 
 ---
 
 ### **Geometric Intuition**
-Think of the series \( 1 + 2 + 3 + \dots + n \) as the number of blocks forming a triangle:
+Think of the series 1 + 2 + 3 + ... + `n` as the number of blocks forming a triangle:  
 
 ```
 *
@@ -968,9 +957,9 @@ Think of the series \( 1 + 2 + 3 + \dots + n \) as the number of blocks forming 
 * * * *
 ```
 
-This triangular structure has \( n \) rows, and the total number of blocks is the same as arranging \( n \) rows into a rectangle of dimensions \( n \times (n + 1) \), then dividing it in half.
+This triangular structure has `n` rows, and the total number of blocks is the same as arranging `n` rows into a rectangle of dimensions `n` × (`n` + 1), then dividing it in half.
 
 ---
 
 ### **Key Takeaway**
-The formula \( \frac{n(n + 1)}{2} \) simplifies the sum of the first \( n \) integers by leveraging symmetry and pairing, saving us from manually summing all numbers.
+The formula `n`(`n` + 1) / 2 simplifies the sum of the first `n` integers by leveraging symmetry and pairing, saving us from manually summing all numbers.  
