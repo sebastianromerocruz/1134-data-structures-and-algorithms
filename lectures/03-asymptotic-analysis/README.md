@@ -12,8 +12,11 @@
 2. [**Testing For Prime Numbers**](#2)
 3. [**Runtime Analyses**](#3)
 4. [**Asymptotic Analysis**](#4)
-5. []()
-6. [**Addendum 1**](#add1)
+5. [**Analysing Code**](#5)
+6. **Addenda**
+    1. [**Addendum A**](#add1)
+    2. [**Addendum B**](#add2)
+    3. [**Addendum C**](#add3)
 
 ---
 
@@ -575,12 +578,192 @@ Thus, we must:
 
 <sub>**Figure 5**: Any runtime of a higher order than the largest term can be said be an upper bound, since it satisfies the inequality.</sub>
 
+---
+
+A quick reminder of what we'll mean in this class when we talk about _log_:
+
+- log<sub>10</sub>(`n`) means base-10.
+- log<sub>2</sub>(`n`) means base-2.
+- log(`n`) means...
+    - If we're talking about CS, then base-2.
+    - If we're not talking CS, then base-10. I know, I hate it too.
+
+
+<br>
+
+<a id="5"></a>
+
+## Analysing Code
+
+Alright, that was a lot. This took me a _lot_ of time to understand when I was first introduced to it, so don't hesitate to review these notes and ask for help as many times as it takes for you to feel comfortable. I think it also helps to understand how this applies to regular old code. Well, recall that we're using this notation to find the performance of a program based on how many times it does constant-time operations (like adding and stuff). Let's take a simple bit of code and determine it's runtime.
+
+### Example 1
+
+```python
+def print_square(n):
+    for i in range(1, n + 1):
+        line = '*' * n
+        print(line)
+
+
+def main():
+    print_square(4)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Output:
+
+```
+****
+****
+****
+****
+```
+
+Here, we say that `print_square` runs at Θ(`n`<sup>2</sup>). Why? Well, we know that we have a `for`-loop that executes `n`-times:
+
+```python
+for i in range(1, n + 1):
+```
+
+This accounts for making the runtime being at _least_ `n`. Now, inside the `for`-loop, we have two lines. We can safely assume that the `print` function runs at constant time, and since in big-theta we ignore constants, we'll ignore it. Now, it turns out that the other line _also_ executes `n`-times. Since all this line is...
+
+```python
+line = '*' * n
+```
+
+is Pythonic was of writing...
+
+```python
+line = ""
+
+for j in range(n):  # n-runtime
+    line += '*'
+```
+
+So, if we run an `n`-time operation, we get an `n` * `n` = `n`<sup>2</sup> process. This makes `print_square` run at Θ(`n`<sup>2</sup>).
+
+### Example 2
+
+What about the following code?
+
+```python
+def print_square(n):
+    for i in range(1, n + 1):
+        line = '*' * i
+        print(line)
+
+
+def main():
+    print_square(4)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Output:
+
+```
+*
+**
+***
+****
+```
+
+This algorithm might, at first glance, appear like it has better performance than the first one. And, to a certain extent, you're correct: for small values like `4`, we are performing less constant-time operations. Does this really hold when we have really large values of `n`, though? That is, as `n` gets bigger and bigger, approaching infinity, does this difference even matter? Well, the `for`-loop remains `n`-time, while the inner operation executes `i` amount of times. `i` itself starts at 1, reaching a value of `n` at the end, so...
+
+> T<sub>2</sub>(`n`) = 1 + 2 + 3 + 4 + ... + `n`
+
+We can rewrite this sum as follows ([**why?**](#add3)):
+
+> T<sub>2</sub>(`n`) = 1 + 2 + 3 + 4 + ... + `n` = `n`(`n` + 1) / 2
+>
+> T<sub>2</sub>(`n`) = `n`<sup>2</sup> / 2 + `n` / 2
+
+In big-theta analysis, we ignore the smaller orders (`n` / 2) and the leading term of the highest order element (1 / 2), so we're left with **Θ(`n`<sup>2</sup>)**. This is to say that our second algorithm, when `n` approaches infinity, behaves in pretty much the exact same way as our first.
+
+### Example 3
+
+This piece of code computes the prefix averages of a list, where the prefix average at each position `i` is the average of all the numbers in the list from the start up to position `i`. The algorithm iterates through the list and calculates this average for each position by summing all elements up to that point and dividing by the count of elements:
+
+```python
+def prefix_avg(lst):
+    n = len(lst)      # Θ(n)
+    result = [0] * n  # Θ(n)
+
+    # Θ(n)
+    for i in range(n):
+        curr_sum = sum(lst[0:i + 1])    # Θ(i), which we established is Θ(n)
+        curr_avg = curr_sum / (i + 1)   # Θ(1)
+        result[i] = curr_avg            # Θ(i)
+    
+    return result  # Θ(1)
+
+def main():
+    print(prefix_avg([10, 20, 30, 40, 50]))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Output:
+
+```
+[10.0, 15.0, 20.0, 25.0, 30.0]
+```
+
+> T<sub>3</sub>(`n`) = Θ(`n`) + Θ(`n`<sup>2</sup>) + Θ(1) = **Θ(`n`<sup>2</sup>)**
+
+### Example 4
+
+Now, not all algorithms involving a `for`-loop end up having a quadratic runtime. The following algorithms is a simple Θ(`n`):
+
+```python
+def prefix_avg(lst):
+    n = len(lst)      # Θ(n)
+    result = [0] * n  # Θ(n)
+    curr_sum = 0      # Θ(1)
+
+    # Θ(n)
+    for i in range(n):
+        curr_sum += lst[i]              # Θ(1)
+        curr_avg  = curr_sum / (i + 1)  # Θ(1)
+        result[i] = curr_avg            # Θ(i)
+        
+    return result  # Θ(1)
+
+def main():
+    print(prefix_avg([10, 20, 30, 40, 50]))
+
+if __name__ == "__main__":
+    main()
+```
+
+Output:
+
+```
+[10.0, 15.0, 20.0, 25.0, 30.0]
+```
+
+> T<sub>4</sub>(`n`) = Θ(`n`) + Θ(`n`) + Θ(1) = **Θ(`n`)**
+
+---
+
+Phew—that was a lot to take in. Feeling confused or uncertain? You’re not alone—this is challenging material for many people, myself included. However, it’s also some of the most fundamental theoretical knowledge that every programmer should be familiar with. Understanding this helps us evaluate whether the code we write is as efficient and optimal as it can be. Take your time, revisit these notes as often as you need, and don’t hesitate to ask us for help. You’ve got this!
+
+---
+
 <br>
 
 ## Addendum A: Why 9 for c<sub>2</sub>?
 
 ##### **What Happens with c<sub>2</sub> = 8?**
-If we want f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 ≤ 8`n`<sup>2</sup>, we’re left with 8`n`<sup>2</sup> - 3`n`<sup>2</sup> = 5`n`<sup>2</sup> to account for the smaller terms (6`n` - 15). The goal is to prove:
+If we want f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 ≤ 8`n`<sup>2</sup>, we're left with 8`n`<sup>2</sup> - 3`n`<sup>2</sup> = 5`n`<sup>2</sup> to account for the smaller terms (6`n` - 15). The goal is to prove:
 
 > 6`n` - 15 ≤ 5n<sup>2</sup>.
 
@@ -589,7 +772,7 @@ If we want f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 ≤ 8`n`<sup>2</sup>, we’re l
    - For very large `n`, 5`n`<sup>2</sup> grows much faster than 6`n` - 15, so the inequality holds for large n. However...
 
 2. **Small Values of `n`:**
-   - For smaller values of `n`, 6`n` - 15 can exceed 5`n`<sup>2</sup>. Let’s test:
+   - For smaller values of `n`, 6`n` - 15 can exceed 5`n`<sup>2</sup>. Let's test:
      - For n = 1:
        6(1) - 15 = -9, 5(1)<sup>2</sup> = 5. Inequality holds.
      - For n = 2:
@@ -603,7 +786,7 @@ If we want f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 ≤ 8`n`<sup>2</sup>, we’re l
    - The tighter the bound (e.g., c<sub>2</sub> = 8), the closer the inequality comes to failing, particularly as n transitions from small to large. The more generous choice of c<sub>2</sub> = 9 adds a "buffer" and makes the proof more robust.
 
 ##### **Why 6n - 15 ≤ 6n<sup>2</sup> (for c<sub>2</sub> = 9) Works:**
-When c<sub>2</sub> = 9, the remaining 6n<sup>2</sup> after 3n<sup>2</sup> is plenty to absorb 6n - 15. For all n ≥ 1, it’s clear that:
+When c<sub>2</sub> = 9, the remaining 6n<sup>2</sup> after 3n<sup>2</sup> is plenty to absorb 6n - 15. For all n ≥ 1, it's clear that:
 > 6n - 15 ≤ 6n<sup>2</sup>
 
 This inequality holds comfortably, ensuring the upper bound f(n) ≤ 9n<sup>2</sup> works without any edge cases. 
@@ -648,10 +831,10 @@ We want to show:
    The 4n<sup>3</sup> term grows the fastest as n becomes very large. For large n, the other terms (5n<sup>2</sup>, 10n, 20) contribute relatively little.
 
 2. **Bound the Smaller Terms:**  
-   To simplify the analysis, we ignore 5n<sup>2</sup>, 10n, and 20 because they don’t reduce f(n) below 4n<sup>3</sup>.
+   To simplify the analysis, we ignore 5n<sup>2</sup>, 10n, and 20 because they don't reduce f(n) below 4n<sup>3</sup>.
 
 ##### Choose c<sub>1</sub> = 4:  
-For large n, it’s clear that:  
+For large n, it's clear that:  
 > f(n) = 4n<sup>3</sup> + 5n<sup>2</sup> + 10n + 20 ≥ 4n<sup>3</sup>  
 
 Thus, f(n) ≥ c<sub>1</sub> * n<sup>3</sup> for c<sub>1</sub> = 4 and n<sub>0</sub> = 1, because for n ≥ 1, the dominant term 4n<sup>3</sup> grows large enough that the smaller terms (5n<sup>2</sup>, 10n, 20) do not reduce f(n) below 4n<sup>3</sup>.
@@ -670,7 +853,7 @@ We want to show:
    The 4n<sup>3</sup> term is still the most significant for large n.
 
 2. **Bound Smaller Terms:**  
-   Replace 5n<sup>2</sup>, 10n, and 20 with terms proportional to n<sup>3</sup>. For simplicity, let’s overestimate their growth:
+   Replace 5n<sup>2</sup>, 10n, and 20 with terms proportional to n<sup>3</sup>. For simplicity, let's overestimate their growth:
    - 5n<sup>2</sup> ≤ n<sup>3</sup> for n ≥ 5  
    - 10n ≤ n<sup>3</sup> for n ≥ 10  
    - 20 ≤ n<sup>3</sup> for n ≥ 20  
@@ -685,7 +868,7 @@ For n ≥ 20, we can conclude:
 
 #### **Step 3: Combine Bounds**
 
-We’ve shown that:  
+We've shown that:  
 1. f(n) ≥ 4n<sup>3</sup> for n ≥ 1  
 2. f(n) ≤ 7n<sup>3</sup> for n ≥ 20  
 
@@ -700,3 +883,94 @@ This satisfies the definition of Θ(n<sup>3</sup>), so:
 - The **dominant term** (4n<sup>3</sup>) determines the asymptotic growth.
 - Smaller terms (5n<sup>2</sup>, 10n, 20) become negligible as n grows large, but we still overestimate them to simplify the proof.
 - c<sub>1</sub> and c<sub>2</sub> are chosen based on the dominant term and a safe overestimation of smaller terms.
+
+<br>
+
+<a id="add3"></a>
+
+## Addendum c
+
+The formula for the sum of the first \( n \) positive integers, \( 1 + 2 + 3 + \dots + n = \frac{n(n + 1)}{2} \), can be derived and explained intuitively as follows:
+
+---
+
+### **Step-by-Step Explanation**
+
+#### **1. Break Down the Problem**
+We are summing:
+\[
+S = 1 + 2 + 3 + \dots + n
+\]
+Our goal is to find a formula that directly calculates this sum without adding all the numbers individually.
+
+#### **2. Visualize the Pairing**
+Imagine writing the numbers forward and backward:
+
+```
+S = 1 + 2 + 3 + ... + n
+S = n + (n-1) + (n-2) + ... + 1
+```
+
+Now, add these two equations together, pairing each number from the start and end:
+
+```
+S + S = (1 + n) + (2 + (n-1)) + (3 + (n-2)) + ... + (n + 1)
+```
+
+Each pair sums to \( (n + 1) \), and there are \( n \) such pairs. So:
+
+```
+2S = n(n + 1)
+```
+
+#### **3. Solve for \( S \)**
+Divide both sides by 2 to isolate \( S \):
+
+\[
+S = \frac{n(n + 1)}{2}
+\]
+
+---
+
+### **Why Does This Work?**
+1. **The Pairing Method:** Each number in the series pairs with a complementary number at the other end, always summing to \( (n + 1) \).
+2. **Number of Pairs:** Since there are \( n \) numbers in total, there are \( n \) such pairs.
+
+---
+
+### **Example**
+Let’s apply this to \( n = 5 \):
+\[
+S = 1 + 2 + 3 + 4 + 5
+\]
+
+Using the formula:
+\[
+S = \frac{5(5 + 1)}{2} = \frac{5 \cdot 6}{2} = 15
+\]
+
+Manually adding the numbers:
+\[
+1 + 2 + 3 + 4 + 5 = 15
+\]
+
+Both results match, confirming the formula works!
+
+---
+
+### **Geometric Intuition**
+Think of the series \( 1 + 2 + 3 + \dots + n \) as the number of blocks forming a triangle:
+
+```
+*
+* *
+* * *
+* * * *
+```
+
+This triangular structure has \( n \) rows, and the total number of blocks is the same as arranging \( n \) rows into a rectangle of dimensions \( n \times (n + 1) \), then dividing it in half.
+
+---
+
+### **Key Takeaway**
+The formula \( \frac{n(n + 1)}{2} \) simplifies the sum of the first \( n \) integers by leveraging symmetry and pairing, saving us from manually summing all numbers.
