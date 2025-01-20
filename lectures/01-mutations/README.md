@@ -2,9 +2,7 @@
 
 <h1 align=center>Mutations v. Construction</h1>
 
-<!-- <h3 align=center>30 Blue Sea Moon, Imperial Year MMXXIV</h3> -->
-
-<p align=center><strong><em>Song of the day</strong>: <a href="https://www.youtube.com/watch?v=ifN91YvHj7g"><strong><u>Risk (Official Visualizer)</u></strong></a> by Deftones (2020).</em></p>
+<p align=center><strong><em>Song of the day</strong>: <a href="https://youtu.be/IF2t2CeDhGg?si=mdggY3cwKEYKRcHG"><strong><u>Way Out</u></strong></a> by FKJ (2022).</em></p>
 
 ---
 
