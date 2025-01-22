@@ -13,6 +13,8 @@
     1. [**Mutating A List**](#2-1)
     2. [**Creating A New List**](#2-2)
 
+<p align=center><strong><em><a href="assets/Memory Maps I.pdf">Day 1 Handwritten Class Notes</a></em></strong></p>
+
 ---
 
 <a id="1"></a>
