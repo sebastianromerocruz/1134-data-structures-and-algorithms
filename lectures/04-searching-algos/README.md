@@ -1,6 +1,6 @@
-<h2 align=center>Week 01: <em>Day 1</em></h2>
+<h2 align=center>Week 04: <em>Day 1</em></h2>
 
-<h1 align=center>Mutations v. Construction</h1>
+<h1 align=center>Searching Algorithms</h1>
 
 <p align=center><strong><em>Song of the day</strong>: <a href="https://youtu.be/IF2t2CeDhGg?si=mdggY3cwKEYKRcHG"><strong><u>Way Out</u></strong></a> by FKJ (2022).</em></p>
 
