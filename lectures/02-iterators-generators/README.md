@@ -2,7 +2,7 @@
 
 <h1 align=center>Iterators and Generators</h1>
 
-<p align=center><strong><em>Song of the day</strong>: <a href="https://www.youtube.com/watch?v=ifN91YvHj7g"><strong><u>Risk (Official Visualizer)</u></strong></a> by Deftones (2020).</em></p>
+<p align=center><strong><em>Song of the day</strong>: <a href="https://youtu.be/HNfSFi1BzYU?si=Tz8kfJ73nHf7Z8LY"><strong><u>LO QUE LE PASÓ A HAWAii</u></strong></a> by Bad Bunny (2025)</em></p>
 
 ---
 

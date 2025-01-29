@@ -15,6 +15,7 @@ resource, send me an [**email**](mailto:src402@nyu.edu) about it with the subjec
 <sub>To be released every Monday and Wednesday before lecture.</sub>
 
 1. [**Mutations v. Construction**](lectures/01-mutations)
+2. [**Iterators and Generators**](lectures/02-iterators-generators)
 
 ## How To Use This Repository
 
