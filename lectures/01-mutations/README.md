@@ -14,7 +14,8 @@
     2. [**Creating A New List**](#2-2)
 
 <p align=center><strong><em><a href="assets/Memory Maps I.pdf">Day 1 Handwritten Class Notes</a></em></strong></p>
-<p align=center><strong><em><a href="assets/Memory Maps II.pdf">Day 1 Handwritten Class Notes</a></em></strong></p>
+<p align=center><strong><em><a href="assets/Memory Maps II.pdf">Day 2 Handwritten Class Notes</a></em></strong></p>
+<p align=center><strong><em><a href="assets/Memory Maps III.pdf">Day 3 Handwritten Class Notes</a></em></strong></p>
 
 ---
 
