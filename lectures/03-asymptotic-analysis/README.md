@@ -2,7 +2,7 @@
 
 <h1 align=center>Asymptotic Analysis</h1>
 
-<p align=center><strong><em>Song of the day</strong>: <a href="https://www.youtube.com/watch?v=ifN91YvHj7g"><strong><u>Risk (Official Visualizer)</u></strong></a> by Deftones (2020).</em></p>
+<p align=center><strong><em>Song of the day</strong>: <a href="https://youtu.be/1SN0c1Z8V68?si=koYmqMdwGE5NPB0A"><strong><u>Pour oublier qu'on s'est aimé (To forget that we loved each other)</u></strong></a> by Nino Ferrer (1971).</em></p>
 
 ---
 
