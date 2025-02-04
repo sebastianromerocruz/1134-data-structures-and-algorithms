@@ -291,7 +291,6 @@ In this implementation:
 
 ## Addendum B: _Dunder Methods_
 
-```markdown
 | Common Syntax     | Special Method Form                  |
 |--------------------|--------------------------------------|
 | `a + b`           | `a.__add__(b)`, alternatively `b.__radd__(a)` |
@@ -334,4 +333,3 @@ In this implementation:
 | `repr(a)`         | `a.__repr__()`                      |
 | `reversed(a)`     | `a.__reversed__()`                  |
 | `str(a)`          | `a.__str__()`                       |
-```
