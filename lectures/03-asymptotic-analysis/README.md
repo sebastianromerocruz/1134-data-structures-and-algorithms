@@ -483,7 +483,7 @@ What if we wanted to prove the _exact_ behaviour of f(`n`) as `n` gets larger an
 >
 > `c`<sub>1</sub> * g(`n`) <= f(`n`) <= `c`<sub>2</sub> * g(`n`), for all values of `n` that are at least `n`<sub>0</sub>.
 
-The reason we have two inequalities now is because we want to check both the worst-case scenario (big-O) and the best case scenario (called big-omega, Ω). Let's pick a slightly more complicated runtime function, say:
+The reason we have two inequalities now is because we want to check both the worst-case scenario (big-O) and the best case scenario (called big-omega, Ω). Here's our starting function:
 
 > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15
 
@@ -503,14 +503,21 @@ Thus, we must:
 
     As explained earlier, for big-theta, we only focus on the dominant n<sup>2</sup> term and show that the smaller terms don't significantly affect f(`n`)'s growth rate.
 3. **Set the lower bound**. We must prove f(`n`) >= 3`n`<sup>2</sup> for all `n` >= `n`<sub>0</sub>​...
-    - ...from f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15, so we ensure it's still >= 3`n`<sup>2</sup> for large `n`.
-    - Now, the additional terms shouldn’t interfere with this inequality for large `n`. In other words, we must prove that 6`n` − 15 doesn’t make f(`n`) larger than or equal to 3`n`<sup>2</sup> for large `n`. For this to be true, these terms have to be _non-negative_. The calculation goes as follows:
+    - This means showing that the additional terms in f(`n`), namely 6`n` and -15, do not cause the function to dip below 3`n`<sup>2</sup> as `n` becomes large. Starting with:
 
-        1. 6`n` − 15 >= 0
-        2. 6`n` >= 15
+       > f(`n`) = 3`n`<sup>2</sup> + 6`n` − 15
+
+    - Our goal is to demonstrate that:
+
+        > 3`n`<sup>2</sup> + 6`n` − 15 ≥ 3`n`<sup>2</sup>
+
+    - To achieve this, the extra terms (6`n` − 15) must remain non-negative for large enough `n`. Let’s confirm:
+
+        1. Start with the inequality: 6`n` − 15 >= 0
+        2. Rearrange to find the threshold for n: 6`n` >= 15
         3. n >= 2.5
 
-    - When we get a float number, we round _up_ to a whole number. So, for `n` >= 3:
+    - Since n must be an integer, we round up to the nearest whole number. Therefore, for all `n` ≥ 3, we have:
         > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 **>= 3`n`<sup>2</sup>**
 
     - Thus, **the lower bound 3`n` <= f(`n`) holds for all `n` >= `n`<sub>0</sub> 3**.
@@ -520,17 +527,25 @@ Thus, we must:
         1. **Start with f(`n`)**:
             > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15
         2. **Compare terms**:
-            1. **3`n`<sup>2</sup>**: The dominant term, which grows fastest as `n` becomes large. It is directly part of f(`n`) and contributes most to its growth.
-            2. **6`n`**: This is a smaller term (linear growth compared to `n`<sup>2</sup>), but we can bound it by associating it with `n`<sup>2</sup>.
-            3. **-15**: This is a constant term that becomes insignificant as `n` grows large. However, for the purpose of this proof, we replace it with a larger, positive term to simplify the analysis and avoid any potential edge cases caused by the negative constant. Specifically, we use 6`n`<sup>2</sup>, as it is large enough to account for both 6`n` and −15 (the constant term). This ensures the inequality remains valid for all `n`. ([**why**](#add1)) It also works out nicely with our guess of 9 for `c`<sub>2</sub>.
-        3. **Bound f(`n`)**: we now rewrite f(`n`) as follows:
+            1. **3`n`<sup>2</sup>**: This is the dominant term and the fastest-growing component of f(`n`). It’s the term that dictates how quickly f(`n`) grows as `n` becomes large.
+            2. **6`n`**: This is a smaller term that grows linearly, much slower than n<sup>2</sup>. While it’s smaller, it still contributes to the overall growth and needs to be accounted for when bounding f(`n`) by 9`n`<sup>2</sup>.
+            3. **-15**: This is a constant term that becomes insignificant as `n` grows large. However, for the purpose of this proof, we replace it with a larger, positive term to simplify the analysis and avoid any potential edge cases caused by the negative constant. Specifically, we use 6`n`<sup>2</sup>, as it is large enough to account for both 6`n` and −15 (the constant term). This ensures the inequality remains valid for all `n`. It also works out nicely with our guess of 9 for `c`<sub>2</sub>.
+        3. **Why 6`n`<sup>2</sup> as a replacement?**
+        The choice of 6`n`<sup>2</sup> ensures that we "overestimate" the contributions of both 6`n` (the linear term) and −15 (the constant term).
+        Specifically:
+            1. 6`n`: Since this grows linearly, replacing it with something that grows quadratically (like 6n<sup>2</sup>) guarantees that we account for its contribution.
+            2. −15: By replacing a negative constant with a positive quadratic term (6`n`<sup>2</sup>), we completely eliminate any chance of the negative constant causing the inequality to fail.
+        This choice works because 6`n`<sup>2</sup> is large enough to absorb both terms (6`n` and −15) for any sufficiently large `n`.
+        4. **Rewrite f(`n`) to show the bound:**: With the replacement, we rewrite f(`n`) as follows::
             > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 **< 3`n`<sup>2</sup> + 6`n` - 6`n`<sup>2</sup>**.
             >
             > f(`n`) = 3`n`<sup>2</sup> + 6`n` - 15 <= **9`n`<sup>2</sup> + 6`n`**.
             >
-        4. Since we drop the lesser power terms (6`n`) anyway, we thus say that f(`n`) <= 9n<sup>2</sup>
+        5. Since 6`n` grows much slower than `n`<sup>2</sup>, its contribution becomes insignificant in the context of asymptotic analysis. This allows us to conclude:
+            > f(n) ≤ 9n<sup>2</sup>
 5. Finally, we combine both bounds. For `n` >= `n`<sub>0</sup> = 3:
-    > 3`n`<sup>2</sup> <= f(`n`) <= 9`n`<sup>2</sup>
+    > 3`n`<sup>2</sup> ≤ f(`n`) ≤ 9`n`<sup>2</sup>
+    
     Which satisfied the definition of big-theta: **f(`n`) = Θ(`n`)**.
 
 ![big-theta](assets/big-theta.png)
