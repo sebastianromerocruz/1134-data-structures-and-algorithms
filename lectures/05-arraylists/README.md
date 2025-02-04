@@ -304,7 +304,7 @@ In this implementation:
 | `a >> b`          | `a.__rshift__(b)`, alternatively `b.__rrshift__(a)` |
 | `a & b`           | `a.__and__(b)`, alternatively `b.__rand__(a)` |
 | `a ^ b`           | `a.__xor__(b)`, alternatively `b.__rxor__(a)` |
-| `a | b`           | `a.__or__(b)`, alternatively `b.__ror__(a)` |
+| `a \| b`           | `a.__or__(b)`, alternatively `b.__ror__(a)` |
 | `a += b`          | `a.__iadd__(b)`                     |
 | `a -= b`          | `a.__isub__(b)`                     |
 | `a *= b`          | `a.__imul__(b)`                     |
